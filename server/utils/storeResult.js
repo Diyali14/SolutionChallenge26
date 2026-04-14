@@ -1,3 +1,5 @@
+import { db } from "../firebaseAdmin.js";
+
 const storeResults = async (optimizedNeeds) => {
     const batch = db.batch();
 
@@ -8,6 +10,7 @@ const storeResults = async (optimizedNeeds) => {
         const needRef = db.collection("needs").doc(needId);
 
         batch.update(needRef, {
+            status: "ongoing",
             priorityScore: item.priorityScore
         });
 

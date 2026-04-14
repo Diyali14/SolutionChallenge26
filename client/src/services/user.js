@@ -4,7 +4,7 @@ import {
     signInWithEmailAndPassword,
     signOut
 } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, collection, query, where } from "firebase/firestore";
 
 // SIGN UP (COMMON)
 export const addUser = async (email, password, role, extraData = {}) => {
@@ -32,10 +32,24 @@ export const getUserData = async (uid) => {
     const snap = await getDoc(docRef);
 
     if (snap.exists()) {
-        return snap.data();
+        return {
+            id: snap.id,
+            ...snap.data()
+        };
     } else {
         throw new Error("User data not found");
     }
+};
+
+//GET VOLUNTEERS
+export const getVolunteers = async () => {
+    const q = query(collection(db, "users"), where("role", "==", "volunteer"));
+    const snapshot = await getDocs(q);
+
+    return snapshot.docs.map(doc => ({
+        id: doc.id, //IMPORTANT: must match volunteerId
+        ...doc.data()
+    }));
 };
 
 // LOGOUT

@@ -10,15 +10,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Test
-app.get("/", (req, res) => {
-    res.send("Backend running ");
-});
-
 // Add Need
 app.post("/add-need", async (req, res) => {
     try {
-        const { title, description, location, priority, skills, category } = req.body;
+        const { title, description, location, priority, skills, category, ngoID } = req.body;
 
         const docRef = await db.collection("needs").add({
             title,
@@ -27,6 +22,8 @@ app.post("/add-need", async (req, res) => {
             priority,
             skills,
             category,
+            ngoID,
+            status: "pending",
             createdAt: new Date()
         });
 
@@ -47,6 +44,19 @@ app.get("/get-needs", async (req, res) => {
         }));
 
         res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+//Mark Need as Completed
+app.post("/complete-need/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        await db.collection("needs").doc(id).update({
+            status: "completed"
+        });
+        res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -88,6 +98,22 @@ app.post("/add-ngo", async (req, res) => {
         });
 
         res.json({ success: true, id: docRef.id });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+//Get Assignments
+app.get("/get-assignments", async (req, res) => {
+    try {
+        const snapshot = await db.collection("assignments").get();
+
+        const data = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+
+        res.json(data);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logout } from "../services/user";
-import { FiPlus, FiUser, FiLogOut, FiHeart, FiActivity } from "react-icons/fi";
+import { FiPlus, FiLogOut, FiHeart, FiActivity } from "react-icons/fi";
 
 function Navbar({ user }) {
     const location = useLocation();
@@ -27,7 +27,7 @@ function Navbar({ user }) {
                             <FiHeart className="text-xl fill-white/20" />
                         </div>
                         <span className="text-xl font-bold tracking-tight text-sage-900 font-['Outfit']">
-                            Smart<span className="text-sage-500 font-light">Alloc</span>
+                            Reso<span className="text-sage-500 font-light">Net</span>
                         </span>
                     </Link>
 

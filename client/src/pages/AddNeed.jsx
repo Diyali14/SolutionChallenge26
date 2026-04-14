@@ -3,7 +3,7 @@ import { addNeed } from "../services/need";
 import { FiGlobe, FiAlertCircle, FiTag, FiMapPin, FiType, FiFileText, FiCheckCircle, FiChevronRight } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
-function AddNeed() {
+function AddNeed({user}) {
     const navigate = useNavigate();
     const [form, setForm] = useState({
         title: "",
@@ -12,7 +12,8 @@ function AddNeed() {
         priority: "low",
         category: "education",
         skills: "",
-        status: "pending"
+        status: "pending",
+        ngoID: user?.uid
     });
     const [loading, setLoading] = useState(false);
 
@@ -54,7 +55,7 @@ function AddNeed() {
                             <FiGlobe className="text-sage-500" /> Organizational Gap
                         </span>
                         <h2 className="text-4xl font-extrabold text-warm-900 tracking-tighter leading-tight">
-                            Identify a <br/>
+                            Identify a <br />
                             <span className="text-sage-500 font-light italic">Critical Resource Void.</span>
                         </h2>
                         <p className="text-sage-700 font-medium max-w-sm mx-auto opacity-70">

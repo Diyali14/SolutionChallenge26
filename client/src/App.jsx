@@ -13,14 +13,16 @@ import NgoDashboard from "./pages/NGODashboard";
 import VolunteerDashboard from "./pages/VolunteerDashboard";
 import Login from "./pages/Login";
 
-
 function AppWrapper() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+
       if (firebaseUser) {
         try {
           const extraData = await getUserData(firebaseUser.uid);
@@ -33,7 +35,7 @@ function AppWrapper() {
 
           setUser(fullUser);
 
-          //  ROLE-BASED REDIRECT
+          //ROLE-BASED REDIRECT
           if (location.pathname === "/" || location.pathname === "/login") {
             if (extraData.role === "ngo") {
               navigate("/ngo/dashboard");
@@ -43,37 +45,48 @@ function AppWrapper() {
           }
 
         } catch (err) {
-          console.error(err);
+          console.error("User fetch error:", err);
           setUser(null);
         }
       } else {
         setUser(null);
       }
+
+      setLoading(false);
     });
 
     return () => unsubscribe();
-  }, [navigate]);
+  }, [navigate, location.pathname]);
+
+  if (loading) {
+    return <div className="p-10">Loading app...</div>;
+  }
 
   return (
     <>
       <Navbar user={user} />
 
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard user={user} />} />
 
-        {/* Login Page */}
+        {/* Login */}
         <Route path="/login" element={<Login />} />
 
-        {/* Registration */}
+        {/* Register */}
         <Route path="/register/volunteer" element={<AddVolunteer />} />
         <Route path="/register/ngo" element={<AddNGO />} />
 
-        {/* Dashboards */}
-        <Route path="/volunteer/dashboard" element={<VolunteerDashboard />} />
-        <Route path="/ngo/dashboard" element={<NgoDashboard />} />
+        <Route
+          path="/volunteer/dashboard"
+          element={<VolunteerDashboard user={user} />}
+        />
 
-        {/* Other */}
-        <Route path="/add-need" element={<AddNeed />} />
+        <Route
+          path="/ngo/dashboard"
+          element={<NgoDashboard user={user} />}
+        />
+
+        <Route path="/add-need" element={<AddNeed user={user} />} />
       </Routes>
     </>
   );

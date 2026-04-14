@@ -9,22 +9,23 @@ import {
 
 const assignmentRef = collection(db, "assignments");
 
-// CREATE
-export const addAssignment = async (data) => {
-    return await addDoc(assignmentRef, data);
-};
-
-// READ
+//GET ALL ASSIGNMENTS
 export const getAssignments = async () => {
     const snapshot = await getDocs(assignmentRef);
+
     return snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
     }));
 };
 
-// DELETE
-export const deleteAssignment = async (id) => {
-    const docRef = doc(db, "assignments", id);
-    return await deleteDoc(docRef);
+// GET ASSIGNMENTS BY NEED (VERY USEFUL)
+export const getAssignmentsByNeed = async (needId) => {
+    const q = query(assignmentRef, where("needId", "==", needId));
+    const snapshot = await getDocs(q);
+
+    return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }));
 };
