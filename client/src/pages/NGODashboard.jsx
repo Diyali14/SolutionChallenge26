@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getNeeds, getActiveNeeds } from "../services/need";
-import { FiCheckCircle, FiActivity, FiTrendingUp, FiClock, FiPlus, FiGrid, FiArrowRight } from "react-icons/fi";
+import { FiCheckCircle, FiActivity, FiTrendingUp, FiClock, FiPlus, FiGrid, FiArrowRight, FiGlobe } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import {
     BarChart,
@@ -198,12 +198,12 @@ function NgoDashboard({ user }) {
                             </div>
                         </div>
 
-                        <div className="premium-card p-10 border-none h-full">
+                        <div className="premium-card p-10 border-none max-h-[500px] flex flex-col">
                             <div className="flex items-center justify-between mb-8">
                                 <h3 className="text-2xl font-extrabold text-warm-900 tracking-tight">Global Network</h3>
-                                <FiPlus className="text-sage-400 rotate-45" />
+                                <FiGlobe className="text-sage-400" />
                             </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 overflow-y-auto pr-2 custom-scrollbar">
                                 {allNeeds.map((n) => (
                                     <div key={n.id} className="p-5 rounded-3xl bg-warm-50/50 border border-warm-100 hover:bg-white hover:shadow-lg transition-all duration-500 group">
                                         <h4 className="text-sm font-bold text-warm-900 mb-2 truncate group-hover:text-sage-600 transition-colors uppercase tracking-tight">{n.title}</h4>

@@ -20,6 +20,13 @@ function AppWrapper() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const getThemeClass = (pathname) => {
+    if (pathname === "/" || pathname === "/login") return "theme-blue";
+    if (pathname === "/register/volunteer" || pathname === "/volunteer/dashboard") return "theme-orange";
+    if (pathname === "/register/ngo" || pathname === "/ngo/dashboard" || pathname === "/add-need") return "theme-green";
+    return "theme-blue"; // default
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
 
@@ -63,7 +70,7 @@ function AppWrapper() {
   }
 
   return (
-    <>
+    <div className={`min-h-screen bg-warm-50 ${getThemeClass(location.pathname)}`}>
       <Navbar user={user} />
 
       <Routes>
@@ -88,7 +95,7 @@ function AppWrapper() {
 
         <Route path="/add-need" element={<AddNeed user={user} />} />
       </Routes>
-    </>
+    </div>
   );
 }
 

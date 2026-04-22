@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { getNeeds } from "../services/need";
-import { getUserData } from "../services/user";
+import { getAllUsers } from "../services/user";
 import { Link } from "react-router-dom";
-import { FiArrowRight, FiUsers, FiHeart, FiGlobe, FiTrendingUp, FiActivity, FiShield, FiStar } from "react-icons/fi";
+import { FiArrowRight, FiUsers, FiGlobe, FiActivity, FiShield, FiStar } from "react-icons/fi";
 import {
     BarChart,
     Bar,
     XAxis,
-    YAxis,
     Tooltip,
     ResponsiveContainer,
     PieChart,
@@ -15,7 +14,7 @@ import {
     Cell,
     CartesianGrid
 } from "recharts";
-//get user according to role
+
 function Dashboard() {
     const [needs, setNeeds] = useState([]);
     const [volunteers, setVolunteers] = useState([]);
@@ -30,20 +29,28 @@ function Dashboard() {
 
     const fetchData = async () => {
         try {
-            const [needsData, userData] = await Promise.all([
+            const [needsData, users] = await Promise.all([
                 getNeeds(),
-                getUserData()
+                getAllUsers()
             ]);
 
+            console.log("Needs:", needsData);
+            console.log("Users:", users);
+
             setNeeds(needsData);
-            // setVolunteers(volunteerData);
-            // setNgos(ngoData);
-            setUser(userData);
+
+            const volunteersList = users.filter(u => u.role === "volunteer");
+            const ngosList = users.filter(u => u.role === "ngo");
+
+            setVolunteers(volunteersList);
+            setNgos(ngosList);
 
             const filtered = needsData.filter(
                 (n) => n.status?.toLowerCase() !== "completed"
             );
+
             setActiveNeeds(filtered);
+
         } catch (err) {
             console.error("Landing page fetch error:", err);
         } finally {
@@ -105,8 +112,8 @@ function Dashboard() {
                         <span>The Impact Ecosystem</span>
                     </div>
                     <h1 className="text-6xl md:text-8xl font-extrabold text-warm-900 tracking-tighter leading-[0.95]">
-                        Intelligent <br />
-                        <span className="text-sage-500 font-light italic">Allocation.</span>
+                        Reso
+                        <span className="text-sage-500 font-light italic">Net.</span>
                     </h1>
                     <p className="max-w-2xl text-xl text-sage-700 font-medium leading-relaxed opacity-80">
                         Bridging the organizational gap between critical needs and skilled human capital through a transparent, high-trust ecosystem.

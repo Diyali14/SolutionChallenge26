@@ -5,25 +5,92 @@
 @tailwind utilities;
 
 :root {
-  --sage-50: #f4f7f5;
-  --sage-100: #e8eee9;
-  --sage-200: #d1ddd4;
-  --sage-500: #7d9d85;
-  --sage-600: #6b8a73;
-  --sage-700: #58715e;
+  /* Blue Theme - Default */
+  --warm-50: 239 246 255;
+  --warm-100: 219 234 254;
+  --warm-200: 191 219 254;
+  --warm-300: 147 197 253;
+  --warm-400: 96 165 250;
+  --warm-500: 59 130 246;
+  --warm-600: 37 99 235;
+  --warm-700: 29 78 216;
+  --warm-800: 30 64 175;
+  --warm-900: 30 58 138;
   
-  --warm-50: #faf9f6;
-  --warm-100: #f5f3ef;
-  --warm-200: #ece8e1;
-  --warm-900: #1c1917;
+  --sage-50: 248 250 252;
+  --sage-100: 241 245 249;
+  --sage-200: 226 232 240;
+  --sage-300: 203 213 225;
+  --sage-400: 148 163 184;
+  --sage-500: 100 116 139;
+  --sage-600: 71 85 105;
+  --sage-700: 51 65 85;
+  --sage-800: 30 41 59;
+  --sage-900: 15 23 42;
   
-  --accent-gold: #d4a373;
-  --accent-terracotta: #bc6c25;
+  --accent-gold: 96 165 250;
+  --accent-terracotta: 30 64 175;
+}
+
+.theme-orange {
+  /* Orange Theme */
+  --warm-50: 255 247 237;
+  --warm-100: 255 237 213;
+  --warm-200: 254 215 170;
+  --warm-300: 253 186 116;
+  --warm-400: 251 146 60;
+  --warm-500: 249 115 22;
+  --warm-600: 234 88 12;
+  --warm-700: 194 65 12;
+  --warm-800: 154 52 18;
+  --warm-900: 124 45 18;
+  
+  --sage-50: 255 248 241;
+  --sage-100: 254 242 231;
+  --sage-200: 253 227 207;
+  --sage-300: 252 213 183;
+  --sage-400: 250 198 159;
+  --sage-500: 245 184 135;
+  --sage-600: 237 156 95;
+  --sage-700: 216 132 74;
+  --sage-800: 184 110 60;
+  --sage-900: 146 78 46;
+  
+  --accent-gold: 251 146 60;
+  --accent-terracotta: 234 88 12;
+}
+
+.theme-green {
+  /* Green Theme */
+  --warm-50: 240 253 244;
+  --warm-100: 220 252 231;
+  --warm-200: 187 247 208;
+  --warm-300: 134 239 172;
+  --warm-400: 74 222 128;
+  --warm-500: 34 197 94;
+  --warm-600: 22 163 74;
+  --warm-700: 21 128 61;
+  --warm-800: 22 101 52;
+  --warm-900: 20 83 45;
+  
+  --sage-50: 236 253 245;
+  --sage-100: 209 250 229;
+  --sage-200: 167 243 208;
+  --sage-300: 110 231 183;
+  --sage-400: 52 211 153;
+  --sage-500: 16 185 129;
+  --sage-600: 5 150 105;
+  --sage-700: 4 120 87;
+  --sage-800: 6 95 70;
+  --sage-900: 6 78 59;
+  
+  --accent-gold: 74 222 128;
+  --accent-terracotta: 22 163 74;
 }
 
 @layer base {
   body {
-    @apply bg-warm-50 text-warm-900 antialiased;
+    @apply text-warm-900 antialiased;
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
   

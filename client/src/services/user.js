@@ -4,7 +4,7 @@ import {
     signInWithEmailAndPassword,
     signOut
 } from "firebase/auth";
-import { doc, setDoc, getDoc, collection, query, where } from "firebase/firestore";
+import { doc, setDoc, getDoc, getDocs, collection, query, where } from "firebase/firestore";
 
 // SIGN UP (COMMON)
 export const addUser = async (email, password, role, extraData = {}) => {
@@ -39,6 +39,15 @@ export const getUserData = async (uid) => {
     } else {
         throw new Error("User data not found");
     }
+};
+
+//GET ALL USERS
+export const getAllUsers = async () => {
+    const snap = await getDocs(collection(db, "users"));
+    return snap.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }));
 };
 
 //GET VOLUNTEERS
