@@ -13,6 +13,8 @@ import {
 } from "recharts";
 import { getAssignments } from "../services/assignment";
 
+const API = import.meta.env.VITE_API_URL;
+
 function VolunteerDashboard({ user }) {
 
     const [needs, setNeeds] = useState([]);
@@ -58,11 +60,11 @@ function VolunteerDashboard({ user }) {
         }
 
         try {
-            await fetch("http://localhost:5000/run-matching", {
+            await fetch(`${API}/run-matching`, {
                 method: "POST"
             });
 
-            // small delay to allow Firestore write
+            // Small delay to allow Firestore write
             setTimeout(() => {
                 fetchData(user.uid);
             }, 500);
