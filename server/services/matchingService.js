@@ -3,7 +3,7 @@ import axios from "axios";
 export const callSpringBoot = async (data) => {
     try {
         const res = await axios.post(
-            "http://localhost:8081/optimize", // your Spring Boot endpoint
+            "https://a-6nrr.onrender.com/optimize", // your Spring Boot endpoint
             data
         );
         return res.data;

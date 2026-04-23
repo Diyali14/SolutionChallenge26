@@ -34,9 +34,6 @@ function Dashboard() {
                 getAllUsers()
             ]);
 
-            console.log("Needs:", needsData);
-            console.log("Users:", users);
-
             setNeeds(needsData);
 
             const volunteersList = users.filter(u => u.role === "volunteer");

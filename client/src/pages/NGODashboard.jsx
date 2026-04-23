@@ -12,7 +12,7 @@ import {
     CartesianGrid,
     Cell
 } from "recharts";
-//add option to edit or delete pending needs and an option to mark the ongoing needs as completed
+
 function NgoDashboard({ user }) {
     const [allNeeds, setAllNeeds] = useState([]);
     const [pending, setPending] = useState([]);
@@ -32,7 +32,6 @@ function NgoDashboard({ user }) {
             setAllNeeds(needsData);
 
             const ngoId = user?.uid;
-            //const myNeeds = needsData.filter((n) => n.ngoId === ngoId);
 
             setPending(needsData.filter((n) => n.status?.toLowerCase() === "pending"));
             setOngoing(needsData.filter((n) => n.status?.toLowerCase() === "ongoing"));

@@ -1,11 +1,5 @@
 import { db } from "../firebase";
-import {
-    collection,
-    addDoc,
-    getDocs,
-    deleteDoc,
-    doc
-} from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 
 const assignmentRef = collection(db, "assignments");
 
