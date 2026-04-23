@@ -51,7 +51,6 @@ This project demonstrates:
 Frontend deployed:
 
 ```
-
 https://resonet-black.vercel.app/
 ```
 Node backend:
