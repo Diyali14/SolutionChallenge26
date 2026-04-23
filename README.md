@@ -42,13 +42,24 @@ This project demonstrates:
 ### Deployment
 
 * Render (Backend)
-* Vercel / Netlify (Frontend)
+* Vercel (Frontend)
 
 ---
 
 ##  API Endpoint
 
-Example deployed backend:
+Frontend deployed:
+
+```
+
+https://resonet-black.vercel.app/
+```
+Node backend:
+
+```
+https://solutionchallenge26.onrender.com
+```
+Java Spring Boot:
 
 ```
 https://a-6nrr.onrender.com/optimize
@@ -67,7 +78,7 @@ https://a-6nrr.onrender.com/optimize
 
 ##  Screenshots
 
-*Add screenshots of your UI here*
+*Screenshots will be added shortly*
 
 ---
 
