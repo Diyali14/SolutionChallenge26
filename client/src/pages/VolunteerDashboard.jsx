@@ -59,6 +59,10 @@ function VolunteerDashboard({ user }) {
     console.log("FIRST ASSIGNMENT UID:", assignments[0]?.volunteerId);
 
     const runMatching = async () => {
+        console.log("🚀 API:", API);
+        console.log("🚀 USER:", user);
+        console.log("🚀 UID:", user?.uid);
+
         if (!user?.uid) {
             console.error("User not ready");
             return;
