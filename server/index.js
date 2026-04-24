@@ -185,13 +185,13 @@ app.get("/get-assignments", async (req, res) => {
 
 app.post("/run-matching", async (req, res) => {
     try {
-        console.log("🔥 NEW BACKEND RUNNING, UID:", uid);
+        
         const { uid } = req.body;
 
         if (!uid) {
             return res.status(400).json({ error: "UID is required" });
         }
-
+        console.log("🔥 NEW BACKEND RUNNING, UID:", uid);
         // Fetch needs
         const needsSnap = await db.collection("needs").get();
         const needs = needsSnap.docs.map(doc => ({
