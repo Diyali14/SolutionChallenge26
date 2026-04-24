@@ -8,7 +8,17 @@ import formatData from "./utils/formatData.js";
 
 const app = express();
 
-app.use(cors());
+//app.use(cors());
+app.use(cors({
+    origin: [
+        "http://localhost:5173",
+        "https://resonet-black.vercel.app"
+    ],
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type"],
+}));
+
+app.options("*", cors());
 app.use(express.json());
 
 // Add Need
@@ -185,15 +195,17 @@ app.get("/get-assignments", async (req, res) => {
 
 app.post("/run-matching", async (req, res) => {
     try {
+        console.log("HEADERS:", req.headers);
+        console.log("BODY RECEIVED:", req.body);
 
-        const { uid } = req.body;
+        const uid = req.body?.uid;
 
         if (!uid) {
             return res.status(400).json({ error: "UID is required" });
         }
-        console.log("🔥 NEW BACKEND RUNNING, UID:", uid);
-        console.log("HEADERS:", req.headers);
-        console.log("RAW BODY:", req.body);
+
+        console.log("🔥 RUN MATCHING FOR UID:", uid);
+
         // Fetch needs
         const needsSnap = await db.collection("needs").get();
         const needs = needsSnap.docs.map(doc => ({
@@ -201,8 +213,9 @@ app.post("/run-matching", async (req, res) => {
             ...doc.data()
         }));
 
-        // Fetch current user
+        // Fetch user
         const userDoc = await db.collection("users").doc(uid).get();
+
         if (!userDoc.exists) {
             return res.status(404).json({ error: "User not found" });
         }
@@ -212,17 +225,17 @@ app.post("/run-matching", async (req, res) => {
             ...userDoc.data()
         }];
 
-        // Transform + match
+        // Format + match
         const formattedData = formatData(needs, users);
         const result = await callSpringBoot(formattedData);
 
-        // ✅ Store correctly
+        // Store results correctly
         await storeResults(result.optimizedNeeds, uid);
 
         res.json({ success: true });
 
     } catch (error) {
-        console.error("Matching Error:", error);
+        console.error("❌ Matching Error:", error);
         res.status(500).json({ error: error.message });
     }
 });

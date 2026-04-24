@@ -65,17 +65,21 @@ function VolunteerDashboard({ user }) {
         }
 
         try {
-             console.log("Sending UID:", user.uid);
-            await fetch(`${API}/run-matching`, {
+            console.log("Sending UID:", user.uid);
+
+            const res = await fetch(`${API}/run-matching`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     uid: user.uid,
-
-                })
+                }),
+                mode: "cors"
             });
+
+            const data = await res.json();
+            console.log("Response:", data);
 
             // Small delay to allow Firestore write
             setTimeout(() => {
