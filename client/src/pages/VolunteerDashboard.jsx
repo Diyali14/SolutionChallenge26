@@ -35,6 +35,9 @@ function VolunteerDashboard({ user }) {
             const needsData = await getNeeds();
             const currentUserData = await getUserData(uid);
             const assignmentsData = await getAssignments();
+            console.log("Assignments from DB:", assignmentsData);
+            console.log(assignmentsData[0]);
+
             const active = await getActiveNeeds();
 
             setNeeds(needsData);
@@ -52,6 +55,8 @@ function VolunteerDashboard({ user }) {
     const myAssignments = assignments.filter(
         (a) => a.volunteerId === user?.uid
     );
+    console.log("USER UID:", user?.uid);
+    console.log("FIRST ASSIGNMENT UID:", assignments[0]?.volunteerId);
 
     const runMatching = async () => {
         if (!user?.uid) {
@@ -61,7 +66,14 @@ function VolunteerDashboard({ user }) {
 
         try {
             await fetch(`${API}/run-matching`, {
-                method: "POST"
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    uid: user.uid,
+
+                })
             });
 
             // Small delay to allow Firestore write

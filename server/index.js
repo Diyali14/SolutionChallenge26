@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { db } from "./firebaseAdmin.js";
@@ -68,6 +69,7 @@ app.post("/add-volunteer", async (req, res) => {
         const { name, email, skills, location, availability, role } = req.body;
 
         const docRef = await db.collection("users").add({
+            uid,
             name,
             email,
             skills,
@@ -119,36 +121,106 @@ app.get("/get-assignments", async (req, res) => {
     }
 });
 
-// Matching Endpoint
+// // Matching Endpoint
+// app.post("/run-matching", async (req, res) => {
+
+//     try {
+//         const { uid } = req.body;
+//         if (!uid) {
+//             return res.status(400).json({ error: "UID is required" });
+//         }
+
+//         // 1. Fetch Needs
+//         const needsSnap = await db.collection("needs").get();
+//         const needs = needsSnap.docs.map(doc => ({
+//             id: doc.id,
+//             ...doc.data()
+//         }));
+
+//         // 2. Fetch Only Current User (volunteers)
+//         const userDoc = await db.collection("users").doc(uid).get();
+//         if (!userDoc.exists) {
+//             return res.status(404).json({ error: "User not found" });
+//         }
+//         const users = [{
+//             id: uid,
+//             ...userDoc.data()
+//         }];
+
+//         // 3. Transform
+//         const formattedData = formatData(needs, users);
+
+//         // 4. Call Spring Boot
+//         const result = await callSpringBoot(formattedData);
+
+//         // 5. Store Results
+//         await storeResults(result.optimizedNeeds);
+
+//         for (const item of result.optimizedNeeds) {
+//             const { needId, matchScore } = item;
+
+//             // check duplicate
+//             const existingSnap = await db
+//                 .collection("assignments")
+//                 .where("volunteerId", "==", uid)
+//                 .where("needId", "==", needId)
+//                 .get();
+//             if (!existingSnap.empty) continue;
+//             const newRef = db.collection("assignments").doc();
+//             batch.set(newRef, {
+//                 volunteerId: uid,
+//                 needId,
+//                 matchScore
+//             });
+//         }
+
+//         await batch.commit();
+//         res.json({ success: true });
+
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: error.message });
+//     }
+// });
+
 app.post("/run-matching", async (req, res) => {
     try {
-        // 1. Fetch Needs
+        console.log("🔥 NEW BACKEND RUNNING, UID:", uid);
+        const { uid } = req.body;
+
+        if (!uid) {
+            return res.status(400).json({ error: "UID is required" });
+        }
+
+        // Fetch needs
         const needsSnap = await db.collection("needs").get();
         const needs = needsSnap.docs.map(doc => ({
             id: doc.id,
             ...doc.data()
         }));
 
-        // 2. Fetch Users (volunteers)
-        const usersSnap = await db.collection("users").get();
-        const users = usersSnap.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-        }));
+        // Fetch current user
+        const userDoc = await db.collection("users").doc(uid).get();
+        if (!userDoc.exists) {
+            return res.status(404).json({ error: "User not found" });
+        }
 
-        // 3. Transform
+        const users = [{
+            id: uid,
+            ...userDoc.data()
+        }];
+
+        // Transform + match
         const formattedData = formatData(needs, users);
-
-        // 4. Call Spring Boot
         const result = await callSpringBoot(formattedData);
 
-        // 5. Store Results
-        await storeResults(result.optimizedNeeds);
+        // ✅ Store correctly
+        await storeResults(result.optimizedNeeds, uid);
 
         res.json({ success: true });
 
     } catch (error) {
-        console.error(error);
+        console.error("Matching Error:", error);
         res.status(500).json({ error: error.message });
     }
 });
