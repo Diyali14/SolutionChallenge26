@@ -65,6 +65,7 @@ function VolunteerDashboard({ user }) {
         }
 
         try {
+             console.log("Sending UID:", user.uid);
             await fetch(`${API}/run-matching`, {
                 method: "POST",
                 headers: {
