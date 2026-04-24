@@ -141,7 +141,7 @@ function VolunteerDashboard({ user }) {
 
             {/* Header */}
             <h2 className="text-3xl font-bold mb-6">
-                Welcome, {currentUser?.name || "Volunteer"}
+                Welcome dear, {currentUser?.name || "Volunteer"}
             </h2>
 
             {/* Stats */}
