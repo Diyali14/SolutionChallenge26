@@ -39,38 +39,30 @@ const storeResults = async (optimizedNeeds, uid) => {
     for (const item of optimizedNeeds) {
         const needId = item.need.id;
 
+        // Update need status
         const needRef = db.collection("needs").doc(needId);
         batch.update(needRef, {
             status: "ongoing",
             priorityScore: item.priorityScore
         });
 
-        // 🔥 find match for current user
-        const match = item.matchedVolunteers.find(
+        // Find match for current user
+        const match = item.matchedVolunteers?.find(
             v => v.volunteer.id === uid
         );
 
-        //if (!match) continue;
-        if (!match) {
-            batch.set(ref, {
-                needId,
-                volunteerId: uid,
-                matchScore: 1   // fallback
-            });
-        } else {
-            batch.set(ref, {
-                needId,
-                volunteerId: uid,
-                matchScore: match.matchScore
-            });
-        }
-
+        // ALWAYS create ref BEFORE using it
         const ref = db.collection("assignments").doc();
 
+        // Safe matchScore handling
+        const matchScore = match ? match.matchScore : 1;
+
+        // Single clean write
         batch.set(ref, {
             needId,
             volunteerId: uid,
-            matchScore: match.matchScore
+            matchScore,
+            createdAt: new Date()
         });
     }
 
