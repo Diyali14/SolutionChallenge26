@@ -3,7 +3,7 @@ import { addNeed } from "../services/need";
 import { FiGlobe, FiAlertCircle, FiTag, FiMapPin, FiType, FiFileText, FiCheckCircle, FiChevronRight } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
-function AddNeed({user}) {
+function AddNeed({ user }) {
     const navigate = useNavigate();
     const [form, setForm] = useState({
         title: "",
@@ -132,15 +132,15 @@ function AddNeed({user}) {
                             {/* Description */}
                             <div className="md:col-span-2 space-y-2">
                                 <label className="text-sm font-bold text-sage-800 ml-1 flex items-center gap-2">
-                                    <FiFileText className="text-sage-500" /> Situational Context
+                                    <FiFileText className="text-sage-500" /> People Affected
                                 </label>
                                 <textarea
                                     name="description"
                                     required
                                     value={form.description}
                                     onChange={handleChange}
-                                    placeholder="Provide detailed context regarding the urgency, demographic impact, and specific logistical requirements..."
-                                    rows="4"
+                                    placeholder="Provide number of people affected and specific logistical requirements..."
+                                    rows="3"
                                     className="input-premium resize-none"
                                 />
                             </div>
@@ -150,13 +150,19 @@ function AddNeed({user}) {
                                 <label className="text-sm font-bold text-sage-800 ml-1 flex items-center gap-2">
                                     <FiTag className="text-sage-500" /> Required Capabilities
                                 </label>
-                                <input
+                                <select
                                     name="skills"
                                     value={form.skills}
                                     onChange={handleChange}
                                     placeholder="e.g., Clinical Training, Logistics"
                                     className="input-premium"
-                                />
+                                >
+                                    <option value="education">Education & Literacy</option>
+                                    <option value="health">Healthcare Support</option>
+                                    <option value="food">Resource Logistics</option>
+                                    <option value="relief">Emergency Relief</option>
+                                    <option value="eco">Environmental Action</option>
+                                </select>
                             </div>
 
                             {/* Location */}

@@ -130,80 +130,14 @@ app.get("/get-assignments", async (req, res) => {
     }
 });
 
-// // Matching Endpoint
-// app.post("/run-matching", async (req, res) => {
-
-//     try {
-//         const { uid } = req.body;
-//         if (!uid) {
-//             return res.status(400).json({ error: "UID is required" });
-//         }
-
-//         // 1. Fetch Needs
-//         const needsSnap = await db.collection("needs").get();
-//         const needs = needsSnap.docs.map(doc => ({
-//             id: doc.id,
-//             ...doc.data()
-//         }));
-
-//         // 2. Fetch Only Current User (volunteers)
-//         const userDoc = await db.collection("users").doc(uid).get();
-//         if (!userDoc.exists) {
-//             return res.status(404).json({ error: "User not found" });
-//         }
-//         const users = [{
-//             id: uid,
-//             ...userDoc.data()
-//         }];
-
-//         // 3. Transform
-//         const formattedData = formatData(needs, users);
-
-//         // 4. Call Spring Boot
-//         const result = await callSpringBoot(formattedData);
-
-//         // 5. Store Results
-//         await storeResults(result.optimizedNeeds);
-
-//         for (const item of result.optimizedNeeds) {
-//             const { needId, matchScore } = item;
-
-//             // check duplicate
-//             const existingSnap = await db
-//                 .collection("assignments")
-//                 .where("volunteerId", "==", uid)
-//                 .where("needId", "==", needId)
-//                 .get();
-//             if (!existingSnap.empty) continue;
-//             const newRef = db.collection("assignments").doc();
-//             batch.set(newRef, {
-//                 volunteerId: uid,
-//                 needId,
-//                 matchScore
-//             });
-//         }
-
-//         await batch.commit();
-//         res.json({ success: true });
-
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: error.message });
-//     }
-// });
-
+// Matching Endpoint
 app.post("/run-matching", async (req, res) => {
     try {
-        console.log("HEADERS:", req.headers);
-        console.log("BODY RECEIVED:", req.body);
-
         const uid = req.body?.uid;
 
         if (!uid) {
             return res.status(400).json({ error: "UID is required" });
         }
-
-        console.log("🔥 RUN MATCHING FOR UID:", uid);
 
         // Fetch needs
         const needsSnap = await db.collection("needs").get();
