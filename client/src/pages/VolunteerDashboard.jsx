@@ -35,9 +35,6 @@ function VolunteerDashboard({ user }) {
             const needsData = await getNeeds();
             const currentUserData = await getUserData(uid);
             const assignmentsData = await getAssignments();
-            console.log("Assignments from DB:", assignmentsData);
-            console.log(assignmentsData[0]);
-
             const active = await getActiveNeeds();
 
             setNeeds(needsData);
@@ -55,22 +52,14 @@ function VolunteerDashboard({ user }) {
     const myAssignments = assignments.filter(
         (a) => a.volunteerId === user?.uid
     );
-    console.log("USER UID:", user?.uid);
-    console.log("FIRST ASSIGNMENT UID:", assignments[0]?.volunteerId);
 
     const runMatching = async () => {
-        console.log("🚀 API:", API);
-        console.log("🚀 USER:", user);
-        console.log("🚀 UID:", user?.uid);
-
         if (!user?.uid) {
             console.error("User not ready");
             return;
         }
 
         try {
-            console.log("Sending UID:", user.uid);
-
             const res = await fetch(`${API}/run-matching`, {
                 method: "POST",
                 headers: {
@@ -83,7 +72,6 @@ function VolunteerDashboard({ user }) {
             });
 
             const data = await res.json();
-            console.log("Response:", data);
 
             // Small delay to allow Firestore write
             setTimeout(() => {
